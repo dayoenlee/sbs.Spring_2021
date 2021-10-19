@@ -19,11 +19,28 @@ import lombok.NoArgsConstructor;
 public class UsrArticleController {
 	private int articleLastId;
 	private List<Article> articles;
-	
 	public UsrArticleController() {
+		articleLastId =0;
 		articles =new ArrayList<>();
+		
+		makeTestData();
+		
 	}
 	
+	private void makeTestData() {
+		for(int i =1; i <=10; i ++) {
+			int id =articleLastId +1;
+			
+			String title ="제목"+i;
+			String body = "내용"+i;
+			Article article = new Article (id,title,body);
+			
+			articles.add(article);
+			articleLastId = id;
+		}
+		
+	}
+
 	@RequestMapping("/usr/article/doAdd")
 	@ResponseBody
 	public Article doAdd(String title,String body) {
@@ -42,6 +59,13 @@ public class UsrArticleController {
 		
 		
 		return articles;
+	}
+	@RequestMapping("/usr/article/doDelete")
+	@ResponseBody
+	public String doDelete(int id) {
+		
+		
+		return id + "번 글이 삭제 되었습니다.";
 	}
 }	
 
