@@ -1,39 +1,59 @@
 package com.sbs.exam.demo.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import lombok.Data;
+
 @Controller
 public class UsrHomeController {
-	private int count;
-	UsrHomeController(){
-		count = -1;
-	}
-	@RequestMapping("/usr/home/main")
+	@RequestMapping("/usr/home/test1")
 	@ResponseBody
-	public String showMain() {
-		return "안녕하세요";
+	public String getString() {
+		return "Hi";
 	}
-	@RequestMapping("/usr/home/main2")
+	@RequestMapping("/usr/home/getMap")
 	@ResponseBody
-	public String showMain2() {
-		return "반갑습니다";
+	public Map getMap() {
+		Map<String,Object>map = new HashMap<>();
+		
+		map.put("철수의 나이",22);
+		map.put("영희의 나이",32);
+		return map;
 	}
-	@RequestMapping("/usr/home/main3")
+	@RequestMapping("/usr/home/getList")
 	@ResponseBody
-	public String showMain3() {
-		return "잘가세요";
+	public List<String> getList() {
+		List<String> list = new ArrayList<>();
+		
+		list.add("철수의 나이");
+		list.add("영희의 나이");
+		
+		return list;
 	}
-	@RequestMapping("/usr/home/main4")
+	@RequestMapping("/usr/home/getArticle")
 	@ResponseBody
-	public int showMain4() {
-		return count++;
-	}
-	@RequestMapping("/usr/home/main5")
-	@ResponseBody
-	public String showMain5() {
-		count = 0;
-		return "count의 값이 0으로 초기화 되었습니다.";
+	public Article getArticle() {
+		Article article = new Article();
+		
+	
+		return article;
 	}
 }	
+@Data
+class Article{
+	
+	private int id;
+	private String title;
+	
+	public Article() {
+		id =1;
+		title ="제목";
+	}
+}
