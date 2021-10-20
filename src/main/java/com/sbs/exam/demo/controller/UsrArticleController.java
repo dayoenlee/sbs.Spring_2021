@@ -5,10 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.sbs.exam.demo.service.ArticleService;
 import com.sbs.exam.demo.vo.Article;
 
 import lombok.AllArgsConstructor;
@@ -18,6 +20,8 @@ import lombok.NoArgsConstructor;
 @Controller
 public class UsrArticleController {
 	//인스턴스 변수
+	@Autowired
+	private ArticleService articleService;//서비스 import해주기..
 	private int articleLastId;
 	private List<Article> articles;
 	//생성자
