@@ -60,6 +60,7 @@ public class UsrArticleController {
 		
 		articles.remove(article);
 	}
+	//DAO
 	private void modifyArticle(int id,String title,String body) {
 		
 		Article article = getArticle(id);
@@ -67,6 +68,7 @@ public class UsrArticleController {
 		article.setTitle(title);
 		article.setBody(body);
 	}
+	//
 	
 	//서비스메서드 끝
 	//액션메서드
