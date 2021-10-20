@@ -85,6 +85,18 @@ public class UsrArticleController {
 		
 		return articles;
 	}
+	@RequestMapping("/usr/article/getArticle")
+	@ResponseBody
+	public Object getArticleAction(int id) {
+		//Object 는 모든 리턴이 가능-> 좋은 코드는 아님 나중에 개선
+		Article article = getArticle(id);
+		
+		if (article == null) {
+			return id +"번 게시물은 존재하지 않습니다.";//String
+		}
+		return article;//객체
+	}
+	
 	@RequestMapping("/usr/article/doDelete")
 	@ResponseBody
 	public String doDelete(int id) {
@@ -105,6 +117,9 @@ public class UsrArticleController {
 		modifyArticle(id,title,body);
 		return id + "번 글이 수정 되었습니다.";
 	}
+	
+
+
 	//액션메서드끝
 }	
 
