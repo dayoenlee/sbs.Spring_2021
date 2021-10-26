@@ -1,9 +1,7 @@
 package com.sbs.exam.demo.controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,9 +11,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.sbs.exam.demo.service.ArticleService;
 import com.sbs.exam.demo.vo.Article;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Controller
 public class UsrArticleController {
@@ -26,8 +21,9 @@ public class UsrArticleController {
 	@RequestMapping("/usr/article/doAdd")
 	@ResponseBody
 	public Article doAdd(String title,String body) {
-		Article article = articleService.writeArticle(title,body);//서비스.
+		int id = articleService.writeArticle(title,body);//서비스.
 		
+		Article article = articleService.getArticle(id);
 		
 		return article;
 	}
