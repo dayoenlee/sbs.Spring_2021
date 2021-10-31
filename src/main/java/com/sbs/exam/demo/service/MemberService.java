@@ -24,6 +24,7 @@ public class MemberService {
 		if (oldmember != null) {
 			return -2;
 		}
+	
 		memberRepository.join(loginId,loginPw,name,nickname,cellphoneNo,email);
 		
 		return memberRepository.getLastInertId();
