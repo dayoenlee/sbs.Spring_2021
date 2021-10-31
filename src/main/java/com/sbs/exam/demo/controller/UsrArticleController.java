@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sbs.exam.demo.service.ArticleService;
+import com.sbs.exam.demo.ut.Ut;
 import com.sbs.exam.demo.vo.Article;
+import com.sbs.exam.demo.vo.ResultData;
 
 
 @Controller
@@ -36,14 +38,14 @@ public class UsrArticleController {
 	}
 	@RequestMapping("/usr/article/getArticle")
 	@ResponseBody
-	public Object getArticleAction(int id) {
+	public ResultData getArticle(int id) {
 		//Object 는 모든 리턴이 가능-> 좋은 코드는 아님 나중에 개선
 		Article article = articleService.getArticle(id);
 		
 		if (article == null) {
-			return id +"번 게시물은 존재하지 않습니다.";//String
+			return ResultData.from("F-1", Ut.f("%d번 게시물은 존재하지 않습니다.",id));//String
 		}
-		return article;//객체
+		return ResultData.from("S-1",Ut.f("%d번 게시물입니다.", id),article);//객체
 	}
 	
 	@RequestMapping("/usr/article/doDelete")
