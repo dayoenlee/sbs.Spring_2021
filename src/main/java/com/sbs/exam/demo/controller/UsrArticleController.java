@@ -2,6 +2,7 @@ package com.sbs.exam.demo.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,53 +21,106 @@ public class UsrArticleController {
 	private ArticleService articleService;//서비스 import해주기..
 	
 	//액션메서드
+	
 	@RequestMapping("/usr/article/doAdd")
 	@ResponseBody
-	public Article doAdd(String title,String body) {
-		int id = articleService.writeArticle(title,body);//서비스.
+	public ResultData <Article> doAdd(HttpSession httpSession, String title,String body) {
+		boolean isLogined = false;
+		int loginedMemberId = 0;
+		if(httpSession.getAttribute("loginedMemberId") != null) {
+			isLogined = true;
+			loginedMemberId = (int)httpSession.getAttribute("loginedMemberId");
+		}
+		if (isLogined == false) {
+			return ResultData.from("F-A", "로그인 후 이용해주세요");
+		}
+		if (Ut.empty(title)) {
+			return ResultData.from("F-1", "title을(를) 입력해주세요.");
+		}
 		
+		if (Ut.empty(body)) {
+			return ResultData.from("F-2", "body을(를) 입력해주세요.");
+		}
+		
+		ResultData<Integer> writeArticleRd = articleService.writeArticle(loginedMemberId,title,body);//서비스.
+		int id = writeArticleRd.getData1();
 		Article article = articleService.getArticle(id);
 		
-		return article;
+		return ResultData.newData(writeArticleRd,"article",article);
 	}
+	
 	@RequestMapping("/usr/article/getArticles")
 	@ResponseBody
-	public List<Article> getArticles() {
+	public ResultData <List<Article>> getArticles() {
+		List<Article> articles = articleService.getArticles();
 		
-		
-		return articleService.getArticles();
+		return ResultData.from("S-1","게시물리스트","articles", articles);
 	}
+	
 	@RequestMapping("/usr/article/getArticle")
 	@ResponseBody
-	public ResultData getArticle(int id) {
+	public ResultData <Article> getArticle(int id) {
 		//Object 는 모든 리턴이 가능-> 좋은 코드는 아님 나중에 개선
 		Article article = articleService.getArticle(id);
 		
 		if (article == null) {
 			return ResultData.from("F-1", Ut.f("%d번 게시물은 존재하지 않습니다.",id));//String
 		}
-		return ResultData.from("S-1",Ut.f("%d번 게시물입니다.", id),article);//객체
+		return ResultData.from("S-1",Ut.f("%d번 게시물입니다.", id),"article",article);//객체
 	}
 	
 	@RequestMapping("/usr/article/doDelete")
 	@ResponseBody
-	public String doDelete(int id) {
-		Article article = articleService.getArticle(id);
-		if (article == null) {
-			return id + "번 글은 존재하지 않습니다.";
+	public ResultData<Integer> doDelete(HttpSession httpSession, int id) {
+		
+		boolean isLogined = false;
+		int loginedMemberId = 0;
+		
+		if(httpSession.getAttribute("loginedMemberId") != null) {
+			isLogined = true;
+			loginedMemberId = (int)httpSession.getAttribute("loginedMemberId");
 		}
+		if (isLogined == false) {
+			return ResultData.from("F-A", "로그인 후 이용해주세요");
+		}
+		
+		Article article = articleService.getArticle(id);
+		
+		if (article == null) {
+			return ResultData.from("F-1", Ut.f("%d번 게시물은 존재하지 않습니다.",id));
+		}
+		if(article.getMemberId() != loginedMemberId) {
+			return ResultData.from("F-2","게시물에 대한 권한이 없습니다.");
+		}
+		
 		articleService.deleteArticle(id);
-		return id + "번 글이 삭제 되었습니다.";
+		return ResultData.from("S-1",Ut.f("%d번 게시물을 삭제했습니다.", id),"id",id);
 	}
 	@RequestMapping("/usr/article/doModify")
 	@ResponseBody
-	public String doModify(int id,String title,String body) {
-		Article article = articleService.getArticle(id);
-		if (article == null) {
-			return id + "번 글은 존재하지 않습니다.";
+	public ResultData<Integer> doModify(HttpSession httpSession, int id,String title,String body) {
+		
+		boolean isLogined = false;
+		int loginedMemberId = 0;
+		
+		if(httpSession.getAttribute("loginedMemberId") != null) {
+			isLogined = true;
+			loginedMemberId = (int)httpSession.getAttribute("loginedMemberId");
 		}
-		articleService.modifyArticle(id,title,body);
-		return id + "번 글이 수정 되었습니다.";
+		if (isLogined == false) {
+			return ResultData.from("F-A", "로그인 후 이용해주세요");
+		}
+		
+		Article article = articleService.getArticle(id);
+		
+		if (article == null) {
+			return ResultData.from("F-1", Ut.f("%d번 게시물은 존재하지 않습니다.",id));
+		}
+		if(article.getMemberId() != loginedMemberId) {
+			return ResultData.from("F-2","게시물에 대한 권한이 없습니다.");
+		}
+		
+		return articleService.modifyArticle(id,title,body);
 	}
 	
 

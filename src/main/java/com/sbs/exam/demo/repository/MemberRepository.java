@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import com.sbs.exam.demo.vo.Member;
+import com.sbs.exam.demo.vo.ResultData;
 
 @Mapper
 public interface MemberRepository {
@@ -44,7 +45,7 @@ public interface MemberRepository {
 			FROM `member` AS M
 			WHERE M.loginId = #{loginId}
 			""")
-	Member getMemberByLoginId(@Param("loginId")String loginId);
+	 Member getMemberByLoginId(@Param("loginId")String loginId);
 
 	@Select("""
 			SELECT *

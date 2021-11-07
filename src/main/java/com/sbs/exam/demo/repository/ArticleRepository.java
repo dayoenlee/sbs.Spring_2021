@@ -14,7 +14,7 @@ import com.sbs.exam.demo.vo.Article;
 public interface ArticleRepository {
 //interface 추상클래스
 
-	public void writeArticle(@Param("title") String title,@Param("body") String body);
+	public void writeArticle(@Param("memberId")int memberId,@Param("title") String title,@Param("body") String body);
 	
 
 	public  Article getArticle(@Param("id") int id);
