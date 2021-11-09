@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class Article{
 	
 	private int id;
-	private String reDate;
+	private String regDate;
 	private String updateDate;
 	private int memberId;
 	private String title;
