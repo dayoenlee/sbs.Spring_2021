@@ -1,15 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>메인</title>
-</head>
-<body>
- <h1>메인페이지</h1>
- <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
- Rem delectus blanditiis consequatur aliquid ducimus ipsum molestiae veniam cumque 
- facere quam amet quasi fugiat optio sequi possimus dolorem distinctio ratione officiis.</div>
-</body>
-</html>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<c:set var="pageTitle" value="메인페이지" />
+<%@ include file="../common/head.jspf" %>
+<section class="mt-5">
+  <div class="container mx-auto px-3">Lorem ipsum dolor sit amet,
+    consectetur adipisicing elit. Atque fuga doloribus pariatur nemo
+    aperiam aut suscipit architecto itaque modi delectus. Ratione quis
+    fuga nihil rerum recusandae fugiat quibusdam nesciunt pariatur!</div>
+</section>
+<%@ include file="../common/foot.jspf" %> 
