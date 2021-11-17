@@ -6,6 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.sbs.exam.demo.ut.Ut;
+
 import lombok.Getter;
 
 public class Rq {
@@ -14,24 +16,24 @@ public class Rq {
 	@Getter
 	private int loginedMemberId;
 	private HttpServletRequest req;
-	private HttpServletResponse res;
-	private HttpSession httpSession;
+	private HttpServletResponse resp;
+	private HttpSession session;
 	
 	
-	public Rq(HttpServletRequest req,HttpServletResponse res) {
+	public Rq(HttpServletRequest req,HttpServletResponse resp) {
 		
-		this.httpSession =  req.getSession();
+		this.session =  req.getSession();
 		this.req = req;
-		this.res = res;
+		this.resp = resp;
 		
 		
 		
 		boolean isLogined = false;
 		int loginedMemberId = 0;
 		
-		if(httpSession.getAttribute("loginedMemberId") != null) {
+		if(session.getAttribute("loginedMemberId") != null) {
 			isLogined = true;
-			loginedMemberId = (int)httpSession.getAttribute("loginedMemberId");
+			loginedMemberId = (int)session.getAttribute("loginedMemberId");
 		}
 		
 		this.isLogined =isLogined;
@@ -39,23 +41,37 @@ public class Rq {
 		
 	}
 
-	public void printHistoryBackJs() {
+	public void printHistoryBackJs(String msg) {
 		
-		res.setContentType("text/html; charset=utf-8");
-		print("<script>");
-		print("alert('로그인 후 이용해주세요.');");
-		print("history.back();");
-		print("</script>");
+		resp.setContentType("text/html; charset=utf-8");
+		print(Ut.jsHistoryBack(msg));
 	}
 	
 	public void print (String msg) {
 		
 		try {
-			res.getWriter().append(msg);
+			resp.getWriter().append(msg);
 			
 		}catch(IOException e) {
 			e.printStackTrace();
 		}
 	}
+
+	public void login(Member member) {
+		session.setAttribute("loginedMemberId",member.getId());
+	}
+
+	public void logout() {
+		session.removeAttribute("loginedMemberId");
+		
+	}
+
+	public String historyBackOnView(String msg) {
+		req.setAttribute("msg", msg);
+		req.setAttribute("historyBack", true);
+		return "common/js";
+	}
+	
+	
 
 }

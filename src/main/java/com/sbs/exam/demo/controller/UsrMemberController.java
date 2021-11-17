@@ -1,7 +1,7 @@
 package com.sbs.exam.demo.controller;
 
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +12,7 @@ import com.sbs.exam.demo.service.MemberService;
 import com.sbs.exam.demo.ut.Ut;
 import com.sbs.exam.demo.vo.Member;
 import com.sbs.exam.demo.vo.ResultData;
+import com.sbs.exam.demo.vo.Rq;
 
 
 
@@ -58,12 +59,10 @@ public class UsrMemberController {
 	
 	@RequestMapping("/usr/member/doLogin")
 	@ResponseBody
-	public String doLogin(HttpSession httpSession, String loginId,String loginPw) {
-		boolean isLogined = false;
-		if(httpSession.getAttribute("loginedMemberId") != null) {
-			isLogined = true;
-		}
-		if(isLogined) {
+	public String doLogin(HttpServletRequest req, String loginId,String loginPw) {
+		Rq rq = (Rq)req.getAttribute("rq");
+		
+		if(rq.isLogined()) {
 			return Ut.jsHistoryBack("이미 로그인 되었습니다.");
 		}
 		
@@ -84,32 +83,28 @@ public class UsrMemberController {
 			return Ut.jsHistoryBack("비밀번호가 일치하지않습니다.");
 		}
 		
-		httpSession.setAttribute("loginedMemberId",member.getId());
+		rq.login(member);
 		return Ut.jsReplace(Ut.f("%s님 환영합니다",member.getNickname()),"/");
 	}
 
 	@RequestMapping("/usr/member/doLogout")
 	@ResponseBody
-	public ResultData doLogout(HttpSession httpSession) {
-		boolean isLogined = false;
+	public String doLogout(HttpServletRequest req) {
+		Rq rq = (Rq)req.getAttribute("rq");
 		
-		if(httpSession.getAttribute("loginedMemberId") == null) {
-			isLogined = true;
+		if(!rq.isLogined()) {
+			return Ut.jsHistoryBack("이미 로그아웃상태입니다.");
 		}
 		
-		if(isLogined) {
+		rq.logout();
 			
-			return ResultData.from("F-1","이미 로그아웃상태입니다.");
-		}
-		
-		httpSession.removeAttribute("loginedMemberId");
-			
-		return ResultData.from("S-1","로그아웃되었습니다.");
+		return Ut.jsReplace("로그아웃 되었습니다.", "/");
 		
 	
 	}
+	
 	@RequestMapping("/usr/member/login")
-	public String showLogin(HttpSession httpSession) {
+	public String showLogin() {
 		return "usr/member/login";
 	}
 	

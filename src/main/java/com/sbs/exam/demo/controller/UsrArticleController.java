@@ -3,7 +3,7 @@ package com.sbs.exam.demo.controller;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -112,6 +112,23 @@ public class UsrArticleController {
 		}
 		
 		return articleService.modifyArticle(id,title,body);
+	}
+	@RequestMapping("/usr/article/modify")
+	public String modify(HttpServletRequest req, int id) {
+		Rq rq = (Rq) req.getAttribute("rq");
+		
+		Article article = articleService.getArticle(rq.getLoginedMemberId(), id);
+		
+		if(article == null) {
+			return rq.historyBackOnView(Ut.f("%d번 게시물은 존재하지않습니다.", id));
+		}
+		
+		ResultData actorCanModifyRd = articleService.actorCanModifyRd(rq.getLoginedMemberId(),article);
+		
+		if (actorCanModifyRd.isFail()) {
+			return rq.historyBackOnView(actorCanModifyRd.getMsg());
+		}
+		return "usr/article/modify";
 	}
 	
 

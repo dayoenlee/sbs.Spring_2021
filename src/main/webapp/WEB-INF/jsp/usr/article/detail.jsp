@@ -44,9 +44,7 @@
 
     <div class="btns ml-2">
       <button class="btn-text-link" type="button" onclick="history.back();">뒤로가기</button>
-      <c:if test="${article.extra__actorCanDelete}">
         <a href="../article/doModify?id=${article.id}" class= "btn-text-link ml-2">수정</a>
-      </c:if>
       <c:if test="${article.extra__actorCanDelete}">
         <a onclick="if(confirm('글을 삭제하시겠습니까?')==false){return false;}" href="../article/doDelete?id=${article.id}" class= "btn-text-link ml-2">삭제</a>
       </c:if>
