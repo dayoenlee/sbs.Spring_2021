@@ -58,19 +58,34 @@ public class ArticleService {
 		}
 		if(article.getMemberId() == actorId) {
 			article.setExtra__actorCanDelete(true);
+			article.setExtra__actorCanModify(true);
 		}
 		
 	}
+	
+	
 
 	public ResultData actorCanModifyRd(int actorId, Article article) {
 		if(article == null) {
 			return ResultData.from("F-1", "게시물이 존재하지 않습니다.");
 		}
-		if(article.getMemberId() == actorId) {
+		if(article.getMemberId() != actorId) {
 			return ResultData.from("F-2", "해당 게시물에 대한 권한이 없습니다.");
 		}
 		return ResultData.from("S-1","해당 게시물수정이 가능합니다.");
 	}
+	
+	public ResultData actorCanDeleteRd(int actorId, Article article) {
+		if(article == null) {
+			return ResultData.from("F-1", "게시물이 존재하지 않습니다.");
+		}
+		if(article.getMemberId() != actorId) {
+			return ResultData.from("F-2", "해당 게시물에 대한 권한이 없습니다.");
+		}
+		return ResultData.from("S-1","해당 게시물삭제가 가능합니다.");
+	}
+	
+	
 }	
 
 

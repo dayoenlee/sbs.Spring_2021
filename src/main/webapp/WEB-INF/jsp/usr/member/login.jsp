@@ -29,8 +29,8 @@
             <tr>
               <th>로그인</th>
               <td>
-                <input type="submit" value="로그인" />
-                <button type="button" onclick="history.back();">뒤로가기</button>
+                <button type="submit" class="btn btn-success">로그인</button> 
+                <button type="button" class="btn btn-warning" onclick="history.back();">뒤로가기</button>
               </td>
             </tr>
           </tbody>
