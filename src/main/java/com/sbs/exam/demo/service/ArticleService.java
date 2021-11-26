@@ -20,18 +20,22 @@ public class ArticleService {
 		
 	}
 
-	public ResultData<Integer> writeArticle(int memberId,String title, String body) {
+	public ResultData<Integer> writeArticle(int memberId,int boardId,String title, String body) {
 		
-		articleRepository.writeArticle(memberId,title,body);
+		articleRepository.writeArticle(memberId,boardId,title,body);
 		int id = articleRepository.getLastInsertId();
 		return ResultData.from("S-1",Ut.f("%d번게시물이 생성되었습니다.",id), "id",id);
 	}
-	public List<Article> getArticles(int actorId) {
-		List<Article> articles = articleRepository. getArticles();
-		for(Article article : articles) {
-			updatePrintForData(actorId,article);
-		}
-		return articleRepository. getArticles();
+	public List<Article> getArticles(int actorId, int boardId, int itemsCountInApage, int page) {
+		
+		int limitStart = (page -1) * itemsCountInApage;
+		//10개의 게시물만 가져오겠다.
+		int limitTake = itemsCountInApage;
+		//0 ~ 10 , 10 ~ 20 , 20 ~ 30 게시물 보이기
+		//리포지터리로 보내
+		List<Article> articles = articleRepository. getArticles(boardId,limitStart,limitTake);
+		
+		return articles;
 	}
 
 	public Article getArticle(int actorId,int id) {
@@ -83,6 +87,11 @@ public class ArticleService {
 			return ResultData.from("F-2", "해당 게시물에 대한 권한이 없습니다.");
 		}
 		return ResultData.from("S-1","해당 게시물삭제가 가능합니다.");
+	}
+
+	public int getArticlesCount(int boardId) {
+		
+		return articleRepository.getArticlesCount(boardId);
 	}
 	
 	

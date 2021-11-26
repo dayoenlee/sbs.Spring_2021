@@ -29,3 +29,7 @@ html>body {
 .btn-text-link:hover{
 	text-decoration: underLine;
 }
+/*커스텀 화면너비 800Px 이하부터 반응형 끄기*/
+body {
+	min-width:800Px;
+}

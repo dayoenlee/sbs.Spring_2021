@@ -14,7 +14,7 @@ import com.sbs.exam.demo.vo.Article;
 public interface ArticleRepository {
 //interface 추상클래스
 
-	public void writeArticle(@Param("memberId")int memberId,@Param("title") String title,@Param("body") String body);
+	public void writeArticle(@Param("memberId")int memberId,@Param("boardId")int boardId,@Param("title") String title,@Param("body") String body);
 	
 
 	public  Article getArticle(@Param("id") int id);
@@ -26,8 +26,11 @@ public interface ArticleRepository {
 	public void modifyArticle(@Param("id") int id,@Param("title")String title,@Param("body") String body);
 	
 
-	public List<Article> getArticles();
+	public List<Article> getArticles(@Param("boardId") int boardId,int limitStart, int limitTake);
 	
 
 	public int getLastInsertId();
+
+
+	public int getArticlesCount(@Param("boardId") int boardId);
 }

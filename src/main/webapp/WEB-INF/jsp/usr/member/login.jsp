@@ -29,12 +29,12 @@
             <tr>
               <th>로그인</th>
               <td>
-                <button type="submit" class="btn btn-success">로그인</button> 
-                <button type="button" class="btn btn-warning" onclick="history.back();">뒤로가기</button>
+                <button type="submit" class="btn btn-outline btn-secondary ml-2">로그인</button> 
               </td>
             </tr>
           </tbody>
         </table>
+       <button type="button" class="btn btn-outline btn-primary mt-5" onclick="history.back();">뒤로가기</button>
       </form>
   </div>
 </section>

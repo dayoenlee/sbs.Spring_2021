@@ -42,7 +42,7 @@
       </table>
     </div>
 
-    <div class="btns ml-2">
+    <div class="btns mt-5">
       <button class="btn btn-outline btn-primary"  type="button" onclick="history.back();">뒤로가기</button>
       <c:if test="${article.extra__actorCanModify}">
         <a href="../article/modify?id=${article.id}" class="btn btn-outline btn-secondary ml-2">수정</a>

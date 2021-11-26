@@ -3,7 +3,6 @@ package com.sbs.exam.demo.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -18,8 +17,14 @@ import com.sbs.exam.demo.vo.Rq;
 
 @Controller
 public class UsrMemberController {
-	@Autowired
+	
 	private MemberService memberService;
+	private Rq rq;
+	
+	public UsrMemberController(MemberService memberService,Rq rq) {
+		this.memberService = memberService;
+		this.rq =rq;
+	}
 	
 	
 	@RequestMapping("/usr/member/doJoin")
@@ -59,46 +64,44 @@ public class UsrMemberController {
 	
 	@RequestMapping("/usr/member/doLogin")
 	@ResponseBody
-	public String doLogin(HttpServletRequest req, String loginId,String loginPw) {
-		Rq rq = (Rq)req.getAttribute("rq");
+	public String doLogin(String loginId,String loginPw) {
 		
 		if(rq.isLogined()) {
-			return Ut.jsHistoryBack("이미 로그인 되었습니다.");
+			return rq.jsHistoryBack("이미 로그인 되었습니다.");
 		}
 		
 		//trim() 공백 무시
 		if (Ut.empty(loginId)) {
-			return Ut.jsHistoryBack("loginId (을)를 입력해주세요");
+			return rq.jsHistoryBack("loginId (을)를 입력해주세요");
 		}
 		if (Ut.empty(loginPw)) {
-			return Ut.jsHistoryBack("loginPw (을)를 입력해주세요");
+			return rq.jsHistoryBack("loginPw (을)를 입력해주세요");
 		}
 		
 		Member member = memberService.getMemberByLoginId(loginId);
 		
 		if (member == null) {
-			return Ut.jsHistoryBack("존재하지않는 아이디입니다.");
+			return rq.jsHistoryBack("존재하지않는 아이디입니다.");
 		}
 		if (member.getLoginPw().equals(loginPw) == false) {
-			return Ut.jsHistoryBack("비밀번호가 일치하지않습니다.");
+			return rq.jsHistoryBack("비밀번호가 일치하지않습니다.");
 		}
 		
 		rq.login(member);
-		return Ut.jsReplace(Ut.f("%s님 환영합니다",member.getNickname()),"/");
+		return rq.jsReplace(Ut.f("%s님 환영합니다",member.getNickname()),"/");
 	}
 
 	@RequestMapping("/usr/member/doLogout")
 	@ResponseBody
-	public String doLogout(HttpServletRequest req) {
-		Rq rq = (Rq)req.getAttribute("rq");
+	public String doLogout() {
 		
 		if(!rq.isLogined()) {
-			return Ut.jsHistoryBack("이미 로그아웃상태입니다.");
+			return rq.jsHistoryBack("이미 로그아웃상태입니다.");
 		}
 		
 		rq.logout();
 			
-		return Ut.jsReplace("로그아웃 되었습니다.", "/");
+		return rq.jsReplace("로그아웃 되었습니다.", "/");
 		
 	
 	}

@@ -21,7 +21,7 @@ public class MyWebConfig implements WebMvcConfigurer{
 		
 		InterceptorRegistration ir= registry.addInterceptor(beforeActionInterceptor);
 		ir.addPathPatterns("/**").excludePathPatterns("/resource/**");
-		registry.addInterceptor(needLoginInterceptor).addPathPatterns("/usr/article/doAdd")
+		registry.addInterceptor(needLoginInterceptor).addPathPatterns("/usr/article/write")
 		.addPathPatterns("/usr/article/delete").addPathPatterns("/usr/article/modify")
 		.addPathPatterns("/usr/article/doModify");
 		

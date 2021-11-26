@@ -34,28 +34,28 @@
           <tr>
             <th>제목</th>
             <td> 
-              <textarea class="w-96 textarea h-24 textarea-bordered textarea-info" name="title" type="text" rows="10">
-              ${article.title }</textarea>
+              <input class="w-96 input input-bordered"  name="title" type="text" rows="10"
+              value= "${article.title }" />
             </td>
           </tr>
           <tr>
             <th>내용</th>
             <td>
-              <textarea class="w-full textarea h-24 textarea-bordered textarea-info" name="body" rows="10">
+              <textarea class="w-full textarea textarea-bordered" name="body" rows="10">
               ${article.body}</textarea>
             </td>
           <tr>
             <th>수정</th>
             <td>
               <button type="submit" class="btn btn-outline btn-secondary ml-2">수정</button>
-              <button type="button" class="btn btn-outline btn-primary" onclick="history.back();">뒤로가기</button>
-              <c:if test="${article.extra__actorCanDelete}">
-                <a onclick="if(confirm('글을 삭제하시겠습니까?')==false){return false;}" href="../article/doDelete?id=${article.id}" class="btn btn-outline btn-accent ml-2">삭제</a>
-              </c:if>
             </td>
           <tr> 
         </tbody>
       </table>
+     <button type="button" class="mt-5 btn btn-outline btn-primary" onclick="history.back();">뒤로가기</button>
+     <c:if test="${article.extra__actorCanDelete}">
+      <a onclick="if(confirm('글을 삭제하시겠습니까?')==false){return false;}" href="../article/doDelete?id=${article.id}" class="mt-5 btn btn-outline btn-accent ml-2">삭제</a>
+     </c:if>
     </form>
   </div>
 </section>
