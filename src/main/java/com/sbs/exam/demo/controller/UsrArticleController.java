@@ -62,7 +62,9 @@ public class UsrArticleController {
 	@RequestMapping("/usr/article/list")
 	// Model Spring 인터페이스
 	//RequestParam = 기본 파라미터 지정
-	public String showList(Model model,@RequestParam(defaultValue="1") int boardId,@RequestParam(defaultValue="1") int page) {
+	public String showList(Model model,@RequestParam(defaultValue="title,body") String searchKeywordTypeCode,
+			@RequestParam(defaultValue="") String searchKeyword,@RequestParam(defaultValue="1") int boardId,
+			@RequestParam(defaultValue="1") int page) {
 		
 		
 		Board board = boardService.getBoardById(boardId);
@@ -70,14 +72,14 @@ public class UsrArticleController {
 		if(board == null) {
 			return rq.historyBackOnView(Ut.f("%d번 게시판은 존재하지 않습니다.",boardId));
 		}
-		int articlesCount = articleService.getArticlesCount(boardId);
+		int articlesCount = articleService.getArticlesCount(boardId,searchKeywordTypeCode,searchKeyword);
 		// 한페이지에 10개게시물만
 		int itemsCountInApage = 10;
 		int pagesCount = (int)Math.ceil((double)articlesCount / itemsCountInApage);
 		//글이 30개 / 10 = 3page
 		//글 20개 10 * 2 / 글 21개 3page
 		
-		List<Article> articles = articleService.getArticles(rq.getLoginedMemberId(),boardId,itemsCountInApage,page);
+		List<Article> articles = articleService.getArticles(rq.getLoginedMemberId(),boardId,searchKeywordTypeCode,searchKeyword,itemsCountInApage,page);
 		
 		model.addAttribute("board", board);
 		model.addAttribute("boardId",boardId);

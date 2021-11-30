@@ -26,14 +26,14 @@ public class ArticleService {
 		int id = articleRepository.getLastInsertId();
 		return ResultData.from("S-1",Ut.f("%d번게시물이 생성되었습니다.",id), "id",id);
 	}
-	public List<Article> getArticles(int actorId, int boardId, int itemsCountInApage, int page) {
+	public List<Article> getArticles(int actorId, int boardId, String searchKeywordTypeCode, String searchKeyword, int itemsCountInApage, int page) {
 		
 		int limitStart = (page -1) * itemsCountInApage;
 		//10개의 게시물만 가져오겠다.
 		int limitTake = itemsCountInApage;
 		//0 ~ 10 , 10 ~ 20 , 20 ~ 30 게시물 보이기
 		//리포지터리로 보내
-		List<Article> articles = articleRepository. getArticles(boardId,limitStart,limitTake);
+		List<Article> articles = articleRepository. getArticles(boardId,searchKeywordTypeCode,searchKeyword,limitStart,limitTake);
 		
 		return articles;
 	}
@@ -89,9 +89,9 @@ public class ArticleService {
 		return ResultData.from("S-1","해당 게시물삭제가 가능합니다.");
 	}
 
-	public int getArticlesCount(int boardId) {
+	public int getArticlesCount(int boardId, String searchKeywordTypeCode, String searchKeyword) {
 		
-		return articleRepository.getArticlesCount(boardId);
+		return articleRepository.getArticlesCount(boardId,searchKeywordTypeCode,searchKeyword);
 	}
 	
 	

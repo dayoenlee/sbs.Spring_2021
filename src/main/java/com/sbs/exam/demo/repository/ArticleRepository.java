@@ -26,11 +26,11 @@ public interface ArticleRepository {
 	public void modifyArticle(@Param("id") int id,@Param("title")String title,@Param("body") String body);
 	
 
-	public List<Article> getArticles(@Param("boardId") int boardId,int limitStart, int limitTake);
+	public List<Article> getArticles(int boardId,String searchKeywordTypeCode, String searchKeyword,int limitStart, int limitTake);
 	
 
 	public int getLastInsertId();
 
 
-	public int getArticlesCount(@Param("boardId") int boardId);
+	public int getArticlesCount(int boardId, String searchKeywordTypeCode, String searchKeyword);
 }
