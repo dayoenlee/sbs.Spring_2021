@@ -93,12 +93,26 @@ public class UsrArticleController {
 
 	@RequestMapping("/usr/article/detail")
 	public String showDetal(Model model, int id) {
+		
 		// Object 는 모든 리턴이 가능-> 좋은 코드는 아님 나중에 개선
 		Article article = articleService.getArticle(rq.getLoginedMemberId(), id);
 
 		model.addAttribute("article", article);
 
 		return "usr/article/detail";
+	}
+	
+	@RequestMapping("/usr/article/doIncreaseHitCountRd")
+	@ResponseBody
+	public ResultData<Integer> doIncreaseHitCountRd(int id){
+		// 조회수 증가
+		ResultData increaseHitCountRd = articleService.increaseHitCount(id);
+		
+		if(increaseHitCountRd.isFail()) {
+			return increaseHitCountRd;
+		}
+		
+		return ResultData.newData(increaseHitCountRd, "hitCount", articleService.getArticleHitCount(id));
 	}
 
 	@RequestMapping("/usr/article/getArticle")

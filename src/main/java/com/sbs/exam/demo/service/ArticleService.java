@@ -93,6 +93,21 @@ public class ArticleService {
 		
 		return articleRepository.getArticlesCount(boardId,searchKeywordTypeCode,searchKeyword);
 	}
+
+	public ResultData <Integer> increaseHitCount(int id) {
+		int affectRowsCount = articleRepository.increaseHitCount(id);
+		
+		if(affectRowsCount == 0) {
+			return ResultData.from("F-1", "해당 게시물이 존재하지 않습니다.","affectRowsCount",affectRowsCount);
+		}
+		
+		return ResultData.from("S-1", "조회수가 증가 되었습니다.","affectRowsCount",affectRowsCount);
+	}
+
+	public int getArticleHitCount(int id) {
+		
+		return articleRepository.getArticleHitCount(id);
+	}
 	
 	
 }	

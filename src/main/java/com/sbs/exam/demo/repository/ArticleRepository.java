@@ -6,9 +6,11 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import com.sbs.exam.demo.vo.Article;
+import com.sbs.exam.demo.vo.ResultData;
 
 @Mapper
 public interface ArticleRepository {
@@ -33,4 +35,21 @@ public interface ArticleRepository {
 
 
 	public int getArticlesCount(int boardId, String searchKeywordTypeCode, String searchKeyword);
+
+	@Update("""
+				<script>
+				UPDATE article
+				SET	hitCount = hitCount + 1
+				WHERE id = #{id}
+				</script>
+			""")
+	public int increaseHitCount(int id);
+	@Select("""
+				<script>
+				SELECT hitCount
+				FROM article
+				WHERE id = #{id}
+				</script>
+			""")
+	public int getArticleHitCount(int id);
 }

@@ -158,6 +158,9 @@ SELECT NOW(),NOW(),FLOOR(RAND() * 3 + 1), FLOOR(RAND() * 2 + 1), CONCAT('제목_
 FROM article;
 SELECT FLOOR(RAND() * 2 + 1);
 
+#게시물 테이블에 hitCount 칼럼 추가
+ALTER TABLE article
+ADD COLUMN hitCount INT(10) UNSIGNED NOT NULL DEFAULT 0;
 
 
 SELECT * FROM board;
